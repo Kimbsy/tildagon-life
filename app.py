@@ -17,6 +17,9 @@ def neighbours(x, y):
         (x+1, y+1)
     )
 
+def in_bounds(n):
+    return n <= 48 and 0 <= n
+
 class LifeApp(app.App):
     def __init__(self):
         super().__init__()
@@ -70,7 +73,7 @@ class LifeApp(app.App):
                 check_cells.update(neighbours(*cell))  # Add neighbors to the set
             for x, y in check_cells:
                 total = sum((nx, ny) in self.cells for nx, ny in neighbours(x, y))
-                if total == 3 or (total == 2 and (x, y) in self.cells):
+                if in_bounds(x) and in_bounds(y) and (total == 3 or (total == 2 and (x, y) in self.cells)):
                     new_cells.add((x, y))
             self.cells = new_cells
 
