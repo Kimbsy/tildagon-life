@@ -30,7 +30,14 @@ class LifeApp(app.App):
         self.setup_glider_gun()
 
     def setup_random(self):
-        self.cells = {(random.randint(0, 47), random.randint(0, 47)) for _ in range(200)}
+        # try and reduce the number of times we call into random, the badge struggles
+        cell_count = 200
+        cells = set()
+        while len(cells) < cell_count:
+            x_coords = random.choices(range(48), k=cell_count)
+            y_coords = random.choices(range(48), k=cell_count)
+            cells.update(zip(x_coords, y_coords))
+        self.cells = cells
 
     def setup_glider_gun(self):
         # basic glider gun
